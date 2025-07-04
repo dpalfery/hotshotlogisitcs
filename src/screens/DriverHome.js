@@ -26,6 +26,7 @@ export default function DriverHome() {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
       />
+
     </View>
   );
 }
@@ -35,4 +36,5 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 10 },
   routeItem: { borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 5, marginBottom: 10 },
   routeText: { fontWeight: 'bold', marginBottom: 5 },
+
 });
