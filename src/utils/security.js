@@ -3,9 +3,9 @@ export const SECURITY_CONFIG = {
   // Input validation patterns
   PATTERNS: {
     SHIPMENT_ID: /^[A-Z0-9]{6,12}$/,
-    ADDRESS: /^[a-zA-Z0-9\s,.-]{1,200}$/,
-    DESCRIPTION: /^[a-zA-Z0-9\s,.-!?()]{1,500}$/,
-    NOTES: /^[a-zA-Z0-9\s,.-!?()]{0,300}$/,
+    ADDRESS: /^[a-zA-Z0-9\s,.'-]{1,200}$/,
+    DESCRIPTION: /^[a-zA-Z0-9\s,.'\-!?()]{1,500}$/,
+    NOTES: /^[a-zA-Z0-9\s,.'\-!?()]{0,300}$/,
     PHONE: /^\+?[1-9]\d{1,14}$/,
     EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   },
