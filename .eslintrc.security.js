@@ -1,4 +1,4 @@
-{
+module.exports = {
   "extends": [
     "eslint:recommended", 
     "@react-native-community",
@@ -43,4 +43,4 @@
       "jsx": true
     }
   }
-}
+};
