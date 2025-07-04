@@ -50,6 +50,7 @@ export const SecurityUtils = {
     if (typeof input !== 'string') return '';
     return input
       .trim()
+      .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '') // Remove <script> blocks and their content
       .replace(/<[^>]*>/g, '') // Remove HTML tags
       .replace(/[<>"'&]/g, ''); // Remove potentially dangerous characters
   },
