@@ -158,4 +158,4 @@ This application follows:
 - Industry standard input validation
 - Secure authentication patterns
 
-**Built with Security in Mind** by the AI Security Team
+
