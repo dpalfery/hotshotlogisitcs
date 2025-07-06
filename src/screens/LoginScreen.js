@@ -83,9 +83,17 @@ export default function LoginScreen() {
       driver: { email: "driver@demo.com", password: "demo123" },
     };
 
-    const credentials = demoCredentials[userType];
-    setEmail(credentials.email);
-    setPassword(credentials.password);
+    let credentials = null;
+    if (userType === "customer") {
+      credentials = demoCredentials.customer;
+    } else if (userType === "driver") {
+      credentials = demoCredentials.driver;
+    }
+
+    if (credentials) {
+      setEmail(credentials.email);
+      setPassword(credentials.password);
+    }
   };
 
   return (

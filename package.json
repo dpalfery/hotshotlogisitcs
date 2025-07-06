@@ -27,7 +27,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint src/ --ext .js,.jsx",
-    "lint:security": "eslint src/ --ext .js,.jsx --config .eslintrc.security.js",
+    "lint:security": "ESLINT_USE_FLAT_CONFIG=false eslint src/ --ext .js,.jsx --config .eslintrc.security.js",
     "audit": "npm audit --audit-level moderate",
     "audit:fix": "npm audit fix"
   },

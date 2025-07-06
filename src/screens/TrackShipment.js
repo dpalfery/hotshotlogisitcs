@@ -76,7 +76,12 @@ export default function TrackShipment({ navigation }) {
       // Simulate API call with delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const data = mockShipmentData[shipmentId];
+      let data;
+      if (shipmentId === "JOB001SHIP") {
+        data = mockShipmentData.JOB001SHIP;
+      } else if (shipmentId === "JOB002SHIP") {
+        data = mockShipmentData.JOB002SHIP;
+      }
       if (data) {
         setShipmentData(data);
       } else {

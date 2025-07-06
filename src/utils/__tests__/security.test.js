@@ -65,9 +65,8 @@ describe("Security Utils", () => {
     });
 
     it("should detect javascript: protocol", () => {
-      expect(
-        SecurityUtils.containsMaliciousContent('javascript:alert("xss")'),
-      ).toBe(true);
+      const malicious = 'javascript:alert("xss")'; // eslint-disable-line no-script-url
+      expect(SecurityUtils.containsMaliciousContent(malicious)).toBe(true);
     });
 
     it("should detect event handlers", () => {

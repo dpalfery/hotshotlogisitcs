@@ -8,34 +8,30 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+import { SecurityUtils, SECURITY_CONFIG } from "../utils/security";
 
-// Security utility functions
+// Map input types to validation patterns from SECURITY_CONFIG
 const validateInput = (input, type) => {
-  if (typeof input !== "string") return false;
-
-  // Basic XSS prevention - remove HTML/script tags
-  const cleaned = input.replace(/<[^>]*>/g, "");
-  if (cleaned !== input) return false;
-
   switch (type) {
     case "address":
-      // Address validation: alphanumeric, spaces, common punctuation
-      return /^[a-zA-Z0-9\s,.-]{1,200}$/.test(cleaned);
+      return SecurityUtils.validateInput(
+        input,
+        SECURITY_CONFIG.PATTERNS.ADDRESS,
+      );
     case "description":
-      // Description validation: more lenient but still safe
-      return /^[a-zA-Z0-9\s,.-!?()]{1,500}$/.test(cleaned);
+      return SecurityUtils.validateInput(
+        input,
+        SECURITY_CONFIG.PATTERNS.DESCRIPTION,
+      );
     case "notes":
-      // Notes validation: similar to description
-      return /^[a-zA-Z0-9\s,.-!?()]{0,300}$/.test(cleaned);
+      return SecurityUtils.validateInput(input, SECURITY_CONFIG.PATTERNS.NOTES);
     default:
       return false;
   }
 };
 
-const sanitizeInput = (input) => {
-  if (typeof input !== "string") return "";
-  return input.trim().replace(/[<>]/g, ""); // Basic sanitization
-};
+// Reuse sanitize helper from SecurityUtils
+const sanitizeInput = (input) => SecurityUtils.sanitizeInput(input);
 
 export default function CreateShipment({ navigation }) {
   const [pickup, setPickup] = useState("");
