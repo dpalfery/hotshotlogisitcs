@@ -1,11 +1,13 @@
 module.exports = {
-  preset: 'react-native',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
+  },
   transformIgnorePatterns: [
     'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-safe-area-context|react-native-screens|@react-native-community|@react-native-async-storage)/)',
   ],
   moduleFileExtensions: ['js', 'jsx', 'json'],
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   collectCoverageFrom: [
     'src/**/*.{js,jsx}',
     '!src/**/*.test.{js,jsx}',

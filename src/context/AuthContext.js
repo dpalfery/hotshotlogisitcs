@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { Alert } from "react-native";
-import { SecurityUtils } from "../utils/security";
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Alert } from 'react-native';
+import { SecurityUtils } from '../utils/security';
 
 // Authentication Context
 const AuthContext = createContext(null);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false); // Set to false to require login
       setIsLoading(false);
     } catch (error) {
-      console.error("Auth state check failed:", error);
+      console.error('Auth state check failed:', error);
       setIsAuthenticated(false);
       setIsLoading(false);
     }
@@ -38,13 +38,13 @@ export const AuthProvider = ({ children }) => {
     try {
       // Validate credentials format
       if (!credentials.email || !credentials.password) {
-        throw new Error("Email and password are required");
+        throw new Error('Email and password are required');
       }
 
       // Basic email validation
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(credentials.email)) {
-        throw new Error("Invalid email format");
+        throw new Error('Invalid email format');
       }
 
       // Sanitize input
@@ -60,10 +60,10 @@ export const AuthProvider = ({ children }) => {
       const mockUser = {
         id: SecurityUtils.generateSecureId(8),
         email: sanitizedEmail,
-        role: sanitizedEmail.includes("driver") ? "driver" : "customer",
-        permissions: sanitizedEmail.includes("driver")
-          ? ["view_jobs", "update_jobs", "update_location"]
-          : ["create_shipments", "view_shipments", "track_shipments"],
+        role: sanitizedEmail.includes('driver') ? 'driver' : 'customer',
+        permissions: sanitizedEmail.includes('driver')
+          ? ['view_jobs', 'update_jobs', 'update_location']
+          : ['create_shipments', 'view_shipments', 'track_shipments'],
       };
 
       setUser(mockUser);
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, user: mockUser };
     } catch (error) {
-      Alert.alert("Login Failed", error.message);
+      Alert.alert('Login Failed', error.message);
       return { success: false, error: error.message };
     } finally {
       setIsLoading(false);
@@ -92,10 +92,10 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
 
-      Alert.alert("Logged Out", "You have been successfully logged out.");
+      Alert.alert('Logged Out', 'You have been successfully logged out.');
     } catch (error) {
-      console.error("Logout error:", error);
-      Alert.alert("Logout Error", "Failed to logout properly.");
+      console.error('Logout error:', error);
+      Alert.alert('Logout Error', 'Failed to logout properly.');
     } finally {
       setIsLoading(false);
     }
@@ -124,7 +124,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

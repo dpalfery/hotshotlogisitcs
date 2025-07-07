@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,88 +8,92 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
-} from "react-native";
+} from 'react-native';
 
 // Security utilities
 const validateShipmentId = (id) => {
-  if (typeof id !== "string") return false;
+  if (typeof id !== 'string') {
+    return false;
+  }
   // Alphanumeric shipment ID validation (6-12 characters)
   return /^[A-Z0-9]{6,12}$/.test(id.toUpperCase());
 };
 
 const sanitizeShipmentId = (id) => {
-  if (typeof id !== "string") return "";
-  return id.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (typeof id !== 'string') {
+    return '';
+  }
+  return id.toUpperCase().replace(/[^A-Z0-9]/g, '');
 };
 
 export default function TrackShipment({ navigation }) {
-  const [shipmentId, setShipmentId] = useState("");
+  const [shipmentId, setShipmentId] = useState('');
   const [shipmentData, setShipmentData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Mock shipment data for demonstration
   const mockShipmentData = {
     JOB001SHIP: {
-      id: "JOB001SHIP",
-      status: "In Transit",
-      pickup: "123 Main St, City A",
-      dropoff: "456 Oak Ave, City B",
-      currentLocation: "Highway 101, Mile Marker 45",
-      eta: "2 hours 30 minutes",
-      driverName: "John D.",
-      driverPhone: "+1-XXX-XXX-XX89", // Partially masked for security
+      id: 'JOB001SHIP',
+      status: 'In Transit',
+      pickup: '123 Main St, City A',
+      dropoff: '456 Oak Ave, City B',
+      currentLocation: 'Highway 101, Mile Marker 45',
+      eta: '2 hours 30 minutes',
+      driverName: 'John D.',
+      driverPhone: '+1-XXX-XXX-XX89', // Partially masked for security
     },
     JOB002SHIP: {
-      id: "JOB002SHIP",
-      status: "Delivered",
-      pickup: "789 Pine Rd, City C",
-      dropoff: "321 Elm St, City D",
-      currentLocation: "Delivered",
-      eta: "Completed",
-      driverName: "Jane S.",
-      driverPhone: "+1-XXX-XXX-XX45",
+      id: 'JOB002SHIP',
+      status: 'Delivered',
+      pickup: '789 Pine Rd, City C',
+      dropoff: '321 Elm St, City D',
+      currentLocation: 'Delivered',
+      eta: 'Completed',
+      driverName: 'Jane S.',
+      driverPhone: '+1-XXX-XXX-XX45',
     },
   };
 
   const handleShipmentIdChange = (text) => {
     const sanitized = sanitizeShipmentId(text);
     setShipmentId(sanitized);
-    setError("");
+    setError('');
   };
 
   const trackShipment = async () => {
     if (!shipmentId.trim()) {
-      setError("Please enter a shipment ID");
+      setError('Please enter a shipment ID');
       return;
     }
 
     if (!validateShipmentId(shipmentId)) {
-      setError("Invalid shipment ID format. Use 6-12 alphanumeric characters.");
+      setError('Invalid shipment ID format. Use 6-12 alphanumeric characters.');
       return;
     }
 
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       // Simulate API call with delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       let data;
-      if (shipmentId === "JOB001SHIP") {
+      if (shipmentId === 'JOB001SHIP') {
         data = mockShipmentData.JOB001SHIP;
-      } else if (shipmentId === "JOB002SHIP") {
+      } else if (shipmentId === 'JOB002SHIP') {
         data = mockShipmentData.JOB002SHIP;
       }
       if (data) {
         setShipmentData(data);
       } else {
-        setError("Shipment not found. Please check your ID and try again.");
+        setError('Shipment not found. Please check your ID and try again.');
         setShipmentData(null);
       }
     } catch (err) {
-      setError("Failed to track shipment. Please try again later.");
+      setError('Failed to track shipment. Please try again later.');
       setShipmentData(null);
     } finally {
       setLoading(false);
@@ -97,18 +101,20 @@ export default function TrackShipment({ navigation }) {
   };
 
   const handleContactDriver = () => {
-    if (!shipmentData) return;
+    if (!shipmentData) {
+      return;
+    }
 
     Alert.alert(
-      "Contact Driver",
+      'Contact Driver',
       `Contact ${shipmentData.driverName} at ${shipmentData.driverPhone}?`,
       [
-        { text: "Cancel", style: "cancel" },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: "Call",
+          text: 'Call',
           onPress: () => {
             // TODO: Implement secure calling mechanism
-            Alert.alert("Info", "Calling driver...");
+            Alert.alert('Info', 'Calling driver...');
           },
         },
       ],
@@ -116,13 +122,13 @@ export default function TrackShipment({ navigation }) {
   };
 
   const handleSupport = () => {
-    Alert.alert("Customer Support", "Contact customer support?", [
-      { text: "Cancel", style: "cancel" },
+    Alert.alert('Customer Support', 'Contact customer support?', [
+      { text: 'Cancel', style: 'cancel' },
       {
-        text: "Call Support",
+        text: 'Call Support',
         onPress: () => {
           // TODO: Implement secure support contact
-          Alert.alert("Info", "Connecting to support...");
+          Alert.alert('Info', 'Connecting to support...');
         },
       },
     ]);
@@ -147,7 +153,7 @@ export default function TrackShipment({ navigation }) {
 
         <View style={styles.buttonContainer}>
           <Button
-            title={loading ? "Tracking..." : "Track Shipment"}
+            title={loading ? 'Tracking...' : 'Track Shipment'}
             onPress={trackShipment}
             disabled={loading || !shipmentId.trim()}
           />
@@ -201,40 +207,40 @@ export default function TrackShipment({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
+    color: '#333',
   },
   searchSection: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 15,
     borderRadius: 8,
     marginBottom: 20,
   },
   label: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 8,
-    color: "#333",
+    color: '#333',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 12,
     fontSize: 16,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   inputError: {
-    borderColor: "#ff5252",
+    borderColor: '#ff5252',
     borderWidth: 2,
   },
   errorText: {
-    color: "#ff5252",
+    color: '#ff5252',
     fontSize: 14,
     marginTop: 5,
     marginLeft: 5,
@@ -243,66 +249,66 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   loadingContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 30,
   },
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-    color: "#666",
+    color: '#666',
   },
   shipmentInfo: {
     gap: 15,
   },
   infoCard: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 15,
     borderRadius: 8,
   },
   infoTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
-    color: "#333",
+    color: '#333',
   },
   infoText: {
     fontSize: 16,
     marginBottom: 5,
-    color: "#666",
+    color: '#666',
   },
   mapPlaceholder: {
     borderWidth: 1,
-    borderColor: "#ddd",
-    backgroundColor: "white",
+    borderColor: '#ddd',
+    backgroundColor: 'white',
     height: 150,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 8,
     padding: 15,
   },
   mapText: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
+    fontWeight: '600',
+    color: '#333',
     marginBottom: 5,
   },
   locationText: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#2196f3",
-    textAlign: "center",
+    fontWeight: 'bold',
+    color: '#2196f3',
+    textAlign: 'center',
     marginBottom: 10,
   },
   mapSubtext: {
     fontSize: 12,
-    color: "#999",
-    fontStyle: "italic",
-    textAlign: "center",
+    color: '#999',
+    fontStyle: 'italic',
+    textAlign: 'center',
   },
   buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
     padding: 15,
     borderRadius: 8,
     gap: 10,

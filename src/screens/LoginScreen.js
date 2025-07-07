@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,13 @@ import {
   StyleSheet,
   Alert,
   ActivityIndicator,
-} from "react-native";
-import { useAuth } from "../context/AuthContext";
-import { SecurityUtils, SECURITY_CONFIG } from "../utils/security";
+} from 'react-native';
+import { useAuth } from '../context/AuthContext';
+import { SecurityUtils, SECURITY_CONFIG } from '../utils/security';
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const { login, isLoading } = useAuth();
 
@@ -36,22 +36,22 @@ export default function LoginScreen() {
     const newErrors = {};
 
     if (!email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (
       !SecurityUtils.validateInput(email, SECURITY_CONFIG.PATTERNS.EMAIL)
     ) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!password.trim()) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     // Check for malicious content
     if (SecurityUtils.containsMaliciousContent(email)) {
-      newErrors.email = "Invalid characters detected";
+      newErrors.email = 'Invalid characters detected';
     }
 
     setErrors(newErrors);
@@ -61,8 +61,8 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     if (!validateForm()) {
       Alert.alert(
-        "Validation Error",
-        "Please correct the errors before continuing",
+        'Validation Error',
+        'Please correct the errors before continuing',
       );
       return;
     }
@@ -73,20 +73,20 @@ export default function LoginScreen() {
     });
 
     if (result.success) {
-      Alert.alert("Welcome!", `Logged in as ${result.user.role}`);
+      Alert.alert('Welcome!', `Logged in as ${result.user.role}`);
     }
   };
 
   const handleDemoLogin = (userType) => {
     const demoCredentials = {
-      customer: { email: "customer@demo.com", password: "demo123" },
-      driver: { email: "driver@demo.com", password: "demo123" },
+      customer: { email: 'customer@demo.com', password: 'demo123' },
+      driver: { email: 'driver@demo.com', password: 'demo123' },
     };
 
     let credentials = null;
-    if (userType === "customer") {
+    if (userType === 'customer') {
       credentials = demoCredentials.customer;
-    } else if (userType === "driver") {
+    } else if (userType === 'driver') {
       credentials = demoCredentials.driver;
     }
 
@@ -149,13 +149,13 @@ export default function LoginScreen() {
           <View style={styles.demoButtons}>
             <TouchableOpacity
               style={styles.demoButton}
-              onPress={() => handleDemoLogin("customer")}
+              onPress={() => handleDemoLogin('customer')}
             >
               <Text style={styles.demoButtonText}>Customer Demo</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.demoButton}
-              onPress={() => handleDemoLogin("driver")}
+              onPress={() => handleDemoLogin('driver')}
             >
               <Text style={styles.demoButtonText}>Driver Demo</Text>
             </TouchableOpacity>
@@ -175,15 +175,15 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-    justifyContent: "center",
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
     padding: 20,
   },
   loginCard: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 12,
     padding: 30,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -191,15 +191,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#333",
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    textAlign: "center",
-    color: "#666",
+    textAlign: 'center',
+    color: '#666',
     marginBottom: 30,
   },
   form: {
@@ -207,84 +207,84 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
+    fontWeight: '600',
+    color: '#333',
     marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     borderRadius: 8,
     padding: 15,
     fontSize: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: '#f9f9f9',
     marginBottom: 15,
   },
   inputError: {
-    borderColor: "#ff5252",
+    borderColor: '#ff5252',
     borderWidth: 2,
   },
   errorText: {
-    color: "#ff5252",
+    color: '#ff5252',
     fontSize: 14,
     marginTop: -10,
     marginBottom: 15,
     marginLeft: 5,
   },
   loginButton: {
-    backgroundColor: "#2196f3",
+    backgroundColor: '#2196f3',
     borderRadius: 8,
     padding: 15,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
   },
   disabledButton: {
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
   },
   loginButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   demoSection: {
     borderTopWidth: 1,
-    borderTopColor: "#eee",
+    borderTopColor: '#eee',
     paddingTop: 20,
     marginBottom: 20,
   },
   demoTitle: {
     fontSize: 16,
-    fontWeight: "600",
-    textAlign: "center",
-    color: "#666",
+    fontWeight: '600',
+    textAlign: 'center',
+    color: '#666',
     marginBottom: 15,
   },
   demoButtons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 10,
   },
   demoButton: {
     flex: 1,
-    backgroundColor: "#4caf50",
+    backgroundColor: '#4caf50',
     borderRadius: 6,
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   demoButtonText: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   securityNotice: {
-    backgroundColor: "#e8f5e8",
+    backgroundColor: '#e8f5e8',
     borderRadius: 6,
     padding: 12,
-    alignItems: "center",
+    alignItems: 'center',
   },
   securityText: {
     fontSize: 12,
-    color: "#2e7d32",
-    textAlign: "center",
+    color: '#2e7d32',
+    textAlign: 'center',
   },
 });

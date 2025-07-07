@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,47 +7,47 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
-} from "react-native";
+} from 'react-native';
 
 export default function DriverHome({ navigation }) {
   const [activeJobs] = useState([
     {
-      id: "JOB001",
-      pickup: "123 Main St, City A",
-      dropoff: "456 Oak Ave, City B",
-      status: "assigned",
-      priority: "high",
+      id: 'JOB001',
+      pickup: '123 Main St, City A',
+      dropoff: '456 Oak Ave, City B',
+      status: 'assigned',
+      priority: 'high',
     },
     {
-      id: "JOB002",
-      pickup: "789 Pine Rd, City C",
-      dropoff: "321 Elm St, City D",
-      status: "in_progress",
-      priority: "medium",
+      id: 'JOB002',
+      pickup: '789 Pine Rd, City C',
+      dropoff: '321 Elm St, City D',
+      status: 'in_progress',
+      priority: 'medium',
     },
   ]);
 
   const handleJobAction = (jobId, action) => {
     // Input validation
-    if (!jobId || typeof jobId !== "string") {
-      Alert.alert("Error", "Invalid job ID");
+    if (!jobId || typeof jobId !== 'string') {
+      Alert.alert('Error', 'Invalid job ID');
       return;
     }
 
     // Secure action handling
-    const validActions = ["start", "complete", "cancel", "view"];
+    const validActions = ['start', 'complete', 'cancel', 'view'];
     if (!validActions.includes(action)) {
-      Alert.alert("Error", "Invalid action");
+      Alert.alert('Error', 'Invalid action');
       return;
     }
 
     Alert.alert(
-      "Job Action",
+      'Job Action',
       `${action.charAt(0).toUpperCase() + action.slice(1)} job ${jobId}?`,
       [
-        { text: "Cancel", style: "cancel" },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: "Confirm",
+          text: 'Confirm',
           onPress: () => {
             // TODO: Implement secure API call
             console.log(`Job ${jobId} ${action} confirmed`);
@@ -75,29 +75,29 @@ export default function DriverHome({ navigation }) {
         <Text style={styles.location}>From: {job.pickup}</Text>
         <Text style={styles.location}>To: {job.dropoff}</Text>
         <Text style={styles.status}>
-          Status: {job.status.replace("_", " ").toUpperCase()}
+          Status: {job.status.replace('_', ' ').toUpperCase()}
         </Text>
 
         <View style={styles.actionButtons}>
-          {job.status === "assigned" && (
+          {job.status === 'assigned' && (
             <TouchableOpacity
               style={[styles.actionButton, styles.startButton]}
-              onPress={() => handleJobAction(job.id, "start")}
+              onPress={() => handleJobAction(job.id, 'start')}
             >
               <Text style={styles.buttonText}>Start Job</Text>
             </TouchableOpacity>
           )}
-          {job.status === "in_progress" && (
+          {job.status === 'in_progress' && (
             <TouchableOpacity
               style={[styles.actionButton, styles.completeButton]}
-              onPress={() => handleJobAction(job.id, "complete")}
+              onPress={() => handleJobAction(job.id, 'complete')}
             >
               <Text style={styles.buttonText}>Complete</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity
             style={[styles.actionButton, styles.viewButton]}
-            onPress={() => handleJobAction(job.id, "view")}
+            onPress={() => handleJobAction(job.id, 'view')}
           >
             <Text style={styles.buttonText}>View Details</Text>
           </TouchableOpacity>
@@ -124,14 +124,14 @@ export default function DriverHome({ navigation }) {
           title="Refresh Jobs"
           onPress={() => {
             // TODO: Implement secure refresh mechanism
-            Alert.alert("Info", "Refreshing job list...");
+            Alert.alert('Info', 'Refreshing job list...');
           }}
         />
         <Button
           title="Update Location"
           onPress={() => {
             // TODO: Implement secure location update
-            Alert.alert("Info", "Location updated");
+            Alert.alert('Info', 'Location updated');
           }}
         />
       </View>
@@ -142,75 +142,75 @@ export default function DriverHome({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
-    color: "#333",
+    color: '#333',
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 20,
-    color: "#666",
+    color: '#666',
   },
   jobCard: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 8,
     padding: 15,
     marginBottom: 15,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   jobHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
   jobId: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: 'bold',
+    color: '#333',
   },
   priority: {
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   priorityHigh: {
-    backgroundColor: "#ffebee",
-    color: "#c62828",
+    backgroundColor: '#ffebee',
+    color: '#c62828',
   },
   priorityMedium: {
-    backgroundColor: "#fff3e0",
-    color: "#ef6c00",
+    backgroundColor: '#fff3e0',
+    color: '#ef6c00',
   },
   priorityLow: {
-    backgroundColor: "#e8f5e8",
-    color: "#2e7d32",
+    backgroundColor: '#e8f5e8',
+    color: '#2e7d32',
   },
   location: {
     fontSize: 14,
-    color: "#666",
+    color: '#666',
     marginBottom: 5,
   },
   status: {
     fontSize: 14,
-    color: "#2196f3",
-    fontWeight: "600",
+    color: '#2196f3',
+    fontWeight: '600',
     marginBottom: 15,
   },
   actionButtons: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
   },
   actionButton: {
@@ -220,28 +220,28 @@ const styles = StyleSheet.create({
     minWidth: 90,
   },
   startButton: {
-    backgroundColor: "#4caf50",
+    backgroundColor: '#4caf50',
   },
   completeButton: {
-    backgroundColor: "#2196f3",
+    backgroundColor: '#2196f3',
   },
   viewButton: {
-    backgroundColor: "#757575",
+    backgroundColor: '#757575',
   },
   buttonText: {
-    color: "white",
-    fontWeight: "600",
-    textAlign: "center",
+    color: 'white',
+    fontWeight: '600',
+    textAlign: 'center',
     fontSize: 12,
   },
   emptyState: {
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 50,
   },
   emptyText: {
     fontSize: 16,
-    color: "#999",
-    fontStyle: "italic",
+    color: '#999',
+    fontStyle: 'italic',
   },
   bottomActions: {
     marginTop: 30,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,23 +7,23 @@ import {
   StyleSheet,
   ScrollView,
   Alert,
-} from "react-native";
-import { SecurityUtils, SECURITY_CONFIG } from "../utils/security";
+} from 'react-native';
+import { SecurityUtils, SECURITY_CONFIG } from '../utils/security';
 
 // Map input types to validation patterns from SECURITY_CONFIG
 const validateInput = (input, type) => {
   switch (type) {
-    case "address":
+    case 'address':
       return SecurityUtils.validateInput(
         input,
         SECURITY_CONFIG.PATTERNS.ADDRESS,
       );
-    case "description":
+    case 'description':
       return SecurityUtils.validateInput(
         input,
         SECURITY_CONFIG.PATTERNS.DESCRIPTION,
       );
-    case "notes":
+    case 'notes':
       return SecurityUtils.validateInput(input, SECURITY_CONFIG.PATTERNS.NOTES);
     default:
       return false;
@@ -34,10 +34,10 @@ const validateInput = (input, type) => {
 const sanitizeInput = (input) => SecurityUtils.sanitizeInput(input);
 
 export default function CreateShipment({ navigation }) {
-  const [pickup, setPickup] = useState("");
-  const [dropoff, setDropoff] = useState("");
-  const [details, setDetails] = useState("");
-  const [notes, setNotes] = useState("");
+  const [pickup, setPickup] = useState('');
+  const [dropoff, setDropoff] = useState('');
+  const [details, setDetails] = useState('');
+  const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (setter, value, type) => {
@@ -52,25 +52,25 @@ export default function CreateShipment({ navigation }) {
     const newErrors = {};
 
     if (!pickup.trim()) {
-      newErrors.pickup = "Pickup address is required";
-    } else if (!validateInput(pickup, "address")) {
-      newErrors.pickup = "Invalid pickup address format";
+      newErrors.pickup = 'Pickup address is required';
+    } else if (!validateInput(pickup, 'address')) {
+      newErrors.pickup = 'Invalid pickup address format';
     }
 
     if (!dropoff.trim()) {
-      newErrors.dropoff = "Drop-off address is required";
-    } else if (!validateInput(dropoff, "address")) {
-      newErrors.dropoff = "Invalid drop-off address format";
+      newErrors.dropoff = 'Drop-off address is required';
+    } else if (!validateInput(dropoff, 'address')) {
+      newErrors.dropoff = 'Invalid drop-off address format';
     }
 
     if (!details.trim()) {
-      newErrors.details = "Cargo details are required";
-    } else if (!validateInput(details, "description")) {
-      newErrors.details = "Invalid cargo details format";
+      newErrors.details = 'Cargo details are required';
+    } else if (!validateInput(details, 'description')) {
+      newErrors.details = 'Invalid cargo details format';
     }
 
-    if (notes && !validateInput(notes, "notes")) {
-      newErrors.notes = "Invalid notes format";
+    if (notes && !validateInput(notes, 'notes')) {
+      newErrors.notes = 'Invalid notes format';
     }
 
     setErrors(newErrors);
@@ -80,19 +80,19 @@ export default function CreateShipment({ navigation }) {
   const handleSubmit = () => {
     if (!validateForm()) {
       Alert.alert(
-        "Validation Error",
-        "Please correct the errors before submitting",
+        'Validation Error',
+        'Please correct the errors before submitting',
       );
       return;
     }
 
     // TODO: Implement secure API call with proper authentication
     Alert.alert(
-      "Quote Request",
-      "Your shipment quote request has been submitted securely.",
+      'Quote Request',
+      'Your shipment quote request has been submitted securely.',
       [
         {
-          text: "OK",
+          text: 'OK',
           onPress: () => {
             // Navigate back or to confirmation screen
             if (navigation && navigation.goBack) {
@@ -112,7 +112,7 @@ export default function CreateShipment({ navigation }) {
       <TextInput
         style={[styles.input, errors.pickup && styles.inputError]}
         value={pickup}
-        onChangeText={(value) => handleInputChange(setPickup, value, "pickup")}
+        onChangeText={(value) => handleInputChange(setPickup, value, 'pickup')}
         placeholder="Enter pickup address"
         maxLength={200}
         autoCapitalize="words"
@@ -125,7 +125,7 @@ export default function CreateShipment({ navigation }) {
         style={[styles.input, errors.dropoff && styles.inputError]}
         value={dropoff}
         onChangeText={(value) =>
-          handleInputChange(setDropoff, value, "dropoff")
+          handleInputChange(setDropoff, value, 'dropoff')
         }
         placeholder="Enter drop-off address"
         maxLength={200}
@@ -143,7 +143,7 @@ export default function CreateShipment({ navigation }) {
         ]}
         value={details}
         onChangeText={(value) =>
-          handleInputChange(setDetails, value, "details")
+          handleInputChange(setDetails, value, 'details')
         }
         placeholder="Describe the cargo (weight, dimensions, special handling)"
         maxLength={500}
@@ -162,7 +162,7 @@ export default function CreateShipment({ navigation }) {
           errors.notes && styles.inputError,
         ]}
         value={notes}
-        onChangeText={(value) => handleInputChange(setNotes, value, "notes")}
+        onChangeText={(value) => handleInputChange(setNotes, value, 'notes')}
         placeholder="Any special notes or instructions?"
         maxLength={300}
         multiline={true}
@@ -182,39 +182,39 @@ export default function CreateShipment({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
+    color: '#333',
   },
   label: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 5,
-    color: "#333",
+    color: '#333',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 12,
     marginBottom: 15,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     fontSize: 16,
   },
   inputError: {
-    borderColor: "#ff5252",
+    borderColor: '#ff5252',
     borderWidth: 2,
   },
   textArea: {
     height: 80,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
   errorText: {
-    color: "#ff5252",
+    color: '#ff5252',
     fontSize: 14,
     marginTop: -10,
     marginBottom: 10,
