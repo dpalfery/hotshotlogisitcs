@@ -57,53 +57,54 @@ export default function DriverHome({ navigation }) {
     );
   };
 
-  const renderJob = (job) => (
-    <View key={job.id} style={styles.jobCard}>
-      <View style={styles.jobHeader}>
-        <Text style={styles.jobId}>Job: {job.id}</Text>
-        <Text
-          style={[
-            styles.priority,
-            styles[
-              `priority${job.priority.charAt(0).toUpperCase() + job.priority.slice(1)}`
-            ],
-          ]}
-        >
-          {job.priority.toUpperCase()}
-        </Text>
-      </View>
-      <Text style={styles.location}>From: {job.pickup}</Text>
-      <Text style={styles.location}>To: {job.dropoff}</Text>
-      <Text style={styles.status}>
-        Status: {job.status.replace("_", " ").toUpperCase()}
-      </Text>
+  const renderJob = (job) => {
+    const priorityStyles = {
+      high: styles.priorityHigh,
+      medium: styles.priorityMedium,
+      low: styles.priorityLow,
+    };
 
-      <View style={styles.actionButtons}>
-        {job.status === "assigned" && (
+    return (
+      <View key={job.id} style={styles.jobCard}>
+        <View style={styles.jobHeader}>
+          <Text style={styles.jobId}>Job: {job.id}</Text>
+          <Text style={[styles.priority, priorityStyles[job.priority]]}>
+            {job.priority.toUpperCase()}
+          </Text>
+        </View>
+        <Text style={styles.location}>From: {job.pickup}</Text>
+        <Text style={styles.location}>To: {job.dropoff}</Text>
+        <Text style={styles.status}>
+          Status: {job.status.replace("_", " ").toUpperCase()}
+        </Text>
+
+        <View style={styles.actionButtons}>
+          {job.status === "assigned" && (
+            <TouchableOpacity
+              style={[styles.actionButton, styles.startButton]}
+              onPress={() => handleJobAction(job.id, "start")}
+            >
+              <Text style={styles.buttonText}>Start Job</Text>
+            </TouchableOpacity>
+          )}
+          {job.status === "in_progress" && (
+            <TouchableOpacity
+              style={[styles.actionButton, styles.completeButton]}
+              onPress={() => handleJobAction(job.id, "complete")}
+            >
+              <Text style={styles.buttonText}>Complete</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
-            style={[styles.actionButton, styles.startButton]}
-            onPress={() => handleJobAction(job.id, "start")}
+            style={[styles.actionButton, styles.viewButton]}
+            onPress={() => handleJobAction(job.id, "view")}
           >
-            <Text style={styles.buttonText}>Start Job</Text>
+            <Text style={styles.buttonText}>View Details</Text>
           </TouchableOpacity>
-        )}
-        {job.status === "in_progress" && (
-          <TouchableOpacity
-            style={[styles.actionButton, styles.completeButton]}
-            onPress={() => handleJobAction(job.id, "complete")}
-          >
-            <Text style={styles.buttonText}>Complete</Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          style={[styles.actionButton, styles.viewButton]}
-          onPress={() => handleJobAction(job.id, "view")}
-        >
-          <Text style={styles.buttonText}>View Details</Text>
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

@@ -82,7 +82,7 @@ export const SecurityUtils = {
           /(\+?[1-9]\d{0,2})-?(\d{3})-?(\d{3})-?(\d{2})(\d{2})/,
           "$1-XXX-XXX-XX$5",
         );
-      case "email":
+      case "email": {
         const [username, domain] = data.split("@");
         if (username && domain) {
           const maskedUsername =
@@ -90,6 +90,7 @@ export const SecurityUtils = {
           return `${maskedUsername}@${domain}`;
         }
         return data;
+      }
       default:
         return data;
     }
