@@ -5,80 +5,121 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ```bash
-# Install dependencies
+# Install dependencies (use --legacy-peer-deps due to React Native peer dependencies)
 npm install --legacy-peer-deps
 
-# Run tests
-npm test
+# Run the app
+npx expo start              # Start Expo dev server
+npx react-native run-android   # Run on Android (React Native CLI)
+npx react-native run-ios       # Run on iOS (React Native CLI)
 
-# Run linting
-npm run lint
+# Testing
+npm test                    # Run all tests
+npm run test:watch          # Run tests in watch mode
+npm run test:coverage       # Generate coverage report
 
-# Run security-focused linting
-npm run lint:security
+# Linting
+npm run lint                # Standard ESLint checks
+npm run lint:security       # Security-focused linting with eslint-plugin-security
 
-# Security audit checks
-npm run audit
-npm run audit:fix
-```
-
-## React Native Setup
-
-This is a React Native application. To run:
-
-```bash
-# Using Expo
-npx expo start
-
-# Using React Native CLI
-npx react-native run-android
-npx react-native run-ios
+# Security
+npm run audit               # Check for dependency vulnerabilities (moderate+ severity)
+npm run audit:fix           # Attempt to auto-fix vulnerabilities
 ```
 
 ## Architecture Overview
 
-This is a security-focused logistics mobile app built with React Native. The app serves both customers and drivers with role-based access control.
+This is a security-focused logistics mobile app built with React Native and Expo. It serves both customers and drivers with role-based access control.
 
-### Key Components Structure
+### Application Structure
 
-- **Authentication System**: Context-based authentication with role-based permissions (`src/context/AuthContext.js`)
-- **Security Layer**: Comprehensive input validation, sanitization, and XSS prevention (`src/utils/security.js`)
-- **Navigation**: Stack-based navigation with protected routes (`src/navigation/`)
-- **Screens**: Role-specific screens for customers and drivers (`src/screens/`)
+The app follows a standard React Native architecture:
 
-### Security Architecture
+**App.js** - Entry point that wraps the app in:
+1. `AuthProvider` - Provides authentication context to entire app
+2. `NavigationContainer` - React Navigation wrapper
+3. `AppNavigator` - Stack-based screen navigation
 
-The app implements defense-in-depth security:
+**Core Directories:**
+- `src/context/` - React Context providers (AuthContext)
+- `src/navigation/` - Navigation configuration
+- `src/screens/` - Screen components (CustomerHome, DriverHome, CreateShipment, TrackShipment, LoginScreen)
+- `src/utils/` - Shared utilities (security.js with validation/sanitization functions)
 
-1. **Input Validation**: All user inputs are validated using regex patterns defined in `SECURITY_CONFIG.PATTERNS`
-2. **Data Sanitization**: HTML tag removal and dangerous character filtering via `SecurityUtils.sanitizeInput()`
-3. **Permission System**: Role-based access control with granular permissions
-4. **Authentication Context**: Centralized auth state management with secure token handling (TODO: backend integration)
+### Authentication System (src/context/AuthContext.js)
 
-### Key Security Utilities
+**Context-based authentication** with these key functions:
+- `login(credentials)` - Validates, sanitizes, and authenticates users. Role is determined by email pattern (driver@* = driver, otherwise customer)
+- `logout()` - Clears user state and session
+- `hasPermission(permission)` - Checks user permissions
+- `useAuth()` - Custom hook to access auth context
+- `withAuth(Component)` - HOC for protecting routes
+- `PermissionGuard` - Component-level permission checking
 
-- `SecurityUtils.sanitizeInput()` - XSS prevention
-- `SecurityUtils.validateInput()` - Pattern-based validation
-- `SecurityUtils.maskSensitiveData()` - Data masking for display
-- `SecurityUtils.containsMaliciousContent()` - Malicious content detection
+**Permissions by Role:**
+- Customer: `['create_shipments', 'view_shipments', 'track_shipments']`
+- Driver: `['view_jobs', 'update_jobs', 'update_location']`
 
-### Authentication Flow
+**Current Implementation:** Mock authentication with demo credentials. TODOs indicate future backend integration with token storage.
 
-1. Login credentials are validated and sanitized
-2. User role is determined (customer/driver) based on email pattern
-3. Permissions are assigned based on role
-4. Authentication state is managed through React Context
+### Security Layer (src/utils/security.js)
 
-### Testing Strategy
+**SECURITY_CONFIG object** contains:
+- `PATTERNS` - Regex patterns for validation (shipment IDs, addresses, descriptions, phone, email)
+- `LIMITS` - Length constraints for user inputs
+- `HEADERS` - Standard security headers for API calls
+- `SESSION` - Session timeout configuration (30 min timeout, 5 min refresh threshold)
+- `ERRORS` - Sanitized error messages for user display
 
-- Component tests in `__tests__/` directories
-- Security utility tests for validation functions
-- Uses Jest with React Native preset
+**SecurityUtils functions:**
+- `sanitizeInput(input)` - Removes HTML tags, script blocks, and dangerous characters to prevent XSS
+- `validateInput(input, pattern)` - Validates input against a regex pattern after sanitization
+- `generateSecureId(length)` - Creates random alphanumeric IDs
+- `maskSensitiveData(data, type)` - Masks phone numbers and emails for display
+- `containsMaliciousContent(input)` - Detects script tags, javascript:, event handlers, etc.
 
-## Important Notes
+**Critical:** All user inputs must be passed through `sanitizeInput()` before processing and `validateInput()` before acceptance.
 
-- All user inputs must be validated using the security utilities
-- Use `AuthContext` for authentication state management
-- Implement permission checks using `hasPermission()` for sensitive features
-- Demo credentials: customer@demo.com/demo123, driver@demo.com/demo123
-- The app is designed for future backend integration with .NET Core
+### Navigation (src/navigation/AppNavigator.js)
+
+Stack-based navigation with these screens:
+- CustomerHome (initial route)
+- CreateShipment
+- TrackShipment
+- DriverHome
+
+Note: Navigation does not currently enforce authentication. LoginScreen exists but is not integrated into the navigation flow.
+
+### Testing Configuration
+
+**Jest configuration** (jest.config.js):
+- Uses `jsdom` test environment
+- Transforms React Native modules through babel-jest
+- Coverage collection from `src/**/*.{js,jsx}`
+- File mocks for static assets
+
+**Test files location:** `src/**/__tests__/`
+
+### Security Linting (.eslintrc.security.js)
+
+Uses `eslint-plugin-security` with strict rules:
+- Detects unsafe regex, eval usage, object injection
+- Warns about potential timing attacks, non-literal requires
+- Enforces React Native best practices (no unused styles, platform splitting)
+
+**Important:** Run `npm run lint:security` before commits to catch security issues.
+
+### Demo Credentials
+
+- Customer: `customer@demo.com` / `demo123`
+- Driver: `driver@demo.com` / `demo123`
+
+Role is determined by email pattern (contains "driver" → driver role, otherwise → customer role).
+
+### Future Backend Integration
+
+The codebase is designed for .NET Core backend integration. Look for `// TODO:` comments indicating:
+- Token storage (consider expo-secure-store)
+- API authentication calls
+- Session validation
+- Secure storage of auth tokens
